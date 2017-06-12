@@ -1,5 +1,14 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+    .wrapper(ng-app="AA-Account",ng-controller="activityListCtrl")
+        .page-header
+            h1= 'Account List'
+        div
+            .input-group
+                input(type="text",class="form-control",placeholder="new account",ng-model="input")
+                span(class="input-group-btn")
+                    button(class="btn btn-default",type="button",ng-click="add()")= "+"
+
+        .list-group
+            a(class="list-group-item",ng-repeat="activity in activities track by $index",ng-class="{active:isActived === $index}",ng-bind="activity.name",href='/count/{{activity.index}}')

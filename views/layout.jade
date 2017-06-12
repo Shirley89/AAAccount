@@ -1,7 +1,22 @@
 doctype html
 html
   head
+    meta(http-equiv="content-type", content="text/html; charset=UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0")
+    meta(name="apple-mobile-web-app-capable", content="yes")
+    meta(name="description", content="AA Party account")
+    meta(name="author", content="Shirley Xie")
+    meta(name="keywords",content="AA,AA Party,account,mosiya")
     title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body
-    block content
+    if css
+      - var styles = JSON.parse(css)
+      if Array.isArray(styles)
+        each style in styles
+          link(rel='stylesheet', href= style)
+body
+  block content
+  if js
+    - var javascripts = JSON.parse(js)
+      if Array.isArray(javascripts)
+        each _js in javascripts
+          script(src= _js)
