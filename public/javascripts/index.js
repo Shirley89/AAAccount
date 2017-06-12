@@ -47,7 +47,7 @@
 
     app.controller('activityListCtrl', function ($scope, locals) {
         // prepare data
-        var _input = '', _key = 'Activities',
+        var _input = '', _key = 'Accounts',
             getLen = function () {
                 return $scope.activities.length;
             },
