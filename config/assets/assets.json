@@ -1,6 +1,26 @@
 {
-  "index":{
-    "css": ["/css/bootstrap.css", "/css/style.css"],
-    "js": ["js/angular.min.js", "js/utils.js", "js/index.js"]
+  "index": {
+    "css": [
+      "css/bootstrap.css",
+      "css/style.css"
+    ],
+    "js": [
+      "/js/angular.min.js",
+      "/js/utils.js",
+      "/js/index.js"
+    ]
+  },
+  "account": {
+    "css": [
+      "/css/bootstrap.css",
+      "/css/account.css"
+    ],
+    "js": [
+      "/js/angular.min.js",
+      "/js/zepto.min.js",
+      "/js/dropdown.js",
+      "/js/utils.js",
+      "/js/account.js"
+    ]
   }
 }
