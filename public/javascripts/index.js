@@ -4,14 +4,11 @@
 
 /* Controllers */
 (function (utils) {
-    var app = angular.module('account', []);
+    var app = new App().module;
 
-    app.controller('accountListCtrl', function ($scope) {
+    app.controller('accountListCtrl', function ($scope, newIndex) {
         // prepare data
         var _input = '', _key = 'Accounts',
-            getLen = function () {
-                return $scope.accounts.length;
-            },
             isExist = function () {
                 return $scope.accounts.some(function (item) {
                     return $scope.input == item.value;
@@ -29,10 +26,12 @@
             if (!$scope.input || $scope.input == _input || isExist()) {
                 return;
             }
+            var value;
             _input = $scope.input;
-            var value = {value: _input, index: getLen()};
+            value = {value: _input, index: newIndex($scope.accounts, true)};
             utils.locals.pushArray(_key, value);
             $scope.accounts.unshift(value);
+            $scope.input = '';
         };
     });
 })(window.Utils);

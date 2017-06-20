@@ -7,6 +7,7 @@
     "js": [
       "/js/angular.min.js",
       "/js/utils.js",
+      "/js/app.js",
       "/js/index.js"
     ]
   },
@@ -20,6 +21,7 @@
       "/js/zepto.min.js",
       "/js/dropdown.js",
       "/js/utils.js",
+      "/js/app.js",
       "/js/account.js"
     ]
   }

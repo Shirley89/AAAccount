@@ -6,14 +6,17 @@
     "start": "PORT=8001 node ./bin/www"
   },
   "dependencies": {
-    "angular": "^1.6.4",
     "body-parser": "~1.17.1",
-    "bootstrap": "^3.3.7",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
     "express": "~4.15.2",
     "jade": "~1.11.0",
     "morgan": "~1.8.1",
     "serve-favicon": "~2.4.2"
+  },
+  "devDependencies": {
+    "angular": "^1.6.4",
+    "bootstrap": "^3.3.7",
+    "vue": "^2.3.4"
   }
 }

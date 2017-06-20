@@ -3,14 +3,11 @@
  */
 /* Controllers */
 (function (utils) {
-    var app = angular.module('account', []);
+    var app = new App().module;
 
-    app.controller('activityListCtrl', function ($scope) {
+    app.controller('activityListCtrl', function ($scope, newIndex) {
         // prepare data
         var _key = 'Activities',
-            getLen = function () {
-                // return $scope.activities.length;
-            },
             getActs = function () {
                 // return utils.locals.getArray(_key);
                 var arr = ['外卖早午饭', '路费', '海鲜居', '相机租赁'];
@@ -26,11 +23,11 @@
         $scope.selectedAct = 'Activities';
         $scope.activities = getActs();
         $scope.members = getMems();
-        $scope.items = [{}];
+        $scope.items = [{index: 0}];
 
         // events
         $scope.addItems = function () {
-            var value = {};
+            var value = {index: newIndex($scope.items)};
             // utils.locals.pushArray(_key, value);
             $scope.items.push(value);
         };
@@ -40,7 +37,7 @@
         };
 
         $('.items select').live('change', function (e) {
-            console.info(e.target.dataset.index);
+            console.log(e.target.dataset.index);
         });
     });
 })(window.Utils);
