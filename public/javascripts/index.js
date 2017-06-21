@@ -14,6 +14,7 @@
                     return $scope.input == item.value;
                 });
             };
+        _defaultData(_key);
         $scope.isActived = 0;
         $scope.input = _input;
         $scope.accounts = utils.locals.getArray(_key).reverse();
@@ -34,4 +35,9 @@
             $scope.input = '';
         };
     });
+
+    function _defaultData(_key) {
+        if (utils.locals.getArray(_key).length == 0)
+            utils.locals.setArray(_key, [{"value": "青岛", "index": 0}, {"value": "秦皇岛", "index": 1}]);
+    }
 })(window.Utils);
