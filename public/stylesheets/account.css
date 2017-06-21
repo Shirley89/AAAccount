@@ -1,0 +1,75 @@
+.wrapper {
+    margin: 0 1em;
+}
+
+header {
+    overflow: hidden;
+}
+
+header h3, header a {
+    display: inline-block;
+}
+
+header a {
+    margin: 20px 0 10px 50px;
+}
+
+/* activities */
+.dropdown {
+    text-align: center;
+}
+
+.btn-default {
+    width: 80%;
+}
+
+.btn .caret {
+    margin-left: 10px;
+}
+
+.dropdown-menu {
+    left: 10%;
+    width: 80%;
+}
+
+li.btn-addactivity > a {
+    color: #fff;
+    /*background-color: #5cb85c;*/
+    background-color: #286090;
+}
+
+li.btn-addactivity > a:hover {
+    color: #fff;
+    background-color: #449d44;
+    cursor: text;
+}
+
+/* members */
+.member-list {
+    font-size: 1.2em;
+}
+
+.member-list li {
+    margin-right: 1.5em;
+}
+
+.member-list li:last-of-type {
+    margin-right: 0;
+}
+
+.member-list span:nth-of-type(2), .member-list a {
+    margin-left: .2em;
+}
+
+.member-list .btn-default {
+    width: auto;
+}
+
+/* items */
+.items {
+    margin-top: 5em;
+}
+
+.items footer {
+    margin-top: 2em;
+}

@@ -1,0 +1,55 @@
+//
+   Created by shirley on 27/05/2017.
+
+extends layout
+
+block content
+    article.wrapper(ng-app="account",ng-controller="activityListCtrl")
+
+        header.page-header
+            h1= 'AA Calculate'
+
+
+        section
+            h3 Activities
+            .dropdown
+                button.btn.btn-default.dropdown-toggle(type="button",id="dropdownMenu1",data-toggle="dropdown" aria-haspopup="true",aria-expanded="true") All Activities
+                    span.caret
+                ul.dropdown-menu(aria-labelledby="dropdownMenu3")
+                    li(ng-repeat="activity in activities | filter: '!Activities'")
+                        a(href="javascript:;",ng-bind="activity")
+                    li.divider(role="separator")
+                    li.btn-addactivity
+                        a(href="javascript:;") new activity
+
+
+        section.members
+            header
+                h3 Members
+                a(href="javascript") add
+            ul.member-list.list-inline
+                li(ng-repeat="name in members | filter: '!Members'")
+                    span.glyphicon.glyphicon-user(aria-hidden="true")
+                    span(ng-bind="name")
+
+
+        section.items
+            header
+                h3 Items
+                a(href="javascript:;",ng-click="addItems()") new item
+            article.container-fluid
+                .row(ng-repeat="item in items")
+                    .col-xs-1.col-md-1.col-lg-1
+                        .checkbox
+                            label
+                                input(type="checkbox",value="option1",aria-label="...",data-index="{{item.index}}")
+                    .col-xs-3.col-md-3.col-lg-3
+                        select.form-control(data-index="{{item.index}}",ng-model="selectedMem",ng-options="name for name in members",ng-change="select(selectedMem)")
+
+                    .col-xs-3.col-md-3.col-lg-3
+                        select.form-control(data-index="{{item.index}}",ng-model="selectedAct",ng-options="act for act in activities",ng-change="select(selectedAct)")
+
+                    .col-xs-3.col-md-3.col-lg-3
+                        .input-group
+                            span.input-group-addon ￥
+                            input.form-control(type="text",aria-label="RMB",data-index="{{item.index}}")
