@@ -35,7 +35,6 @@
             $scope.input = '';
         };
     });
-
     function _defaultData(_key) {
         if (utils.locals.getArray(_key).length == 0)
             utils.locals.setArray(_key, [{"value": "青岛", "index": 0}, {"value": "秦皇岛", "index": 1}]);
