@@ -1,0 +1,14 @@
+extends layout
+
+block content
+    .wrapper(ng-app="account",ng-controller="accountListCtrl")
+        .page-header
+            h1= 'Account List'
+        div
+            .input-group
+                input(type="text",class="form-control",placeholder="new account",ng-model="input")
+                span(class="input-group-btn")
+                    button(class="btn btn-default",type="button",ng-click="add()")= "+"
+
+        .list-group
+            a(class="list-group-item",ng-repeat="account in accounts track by $index",ng-class="{active:isActived === $index}",ng-bind="account.value",href='/account/{{account.index}}')

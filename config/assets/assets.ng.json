@@ -5,9 +5,10 @@
       "css/style.css"
     ],
     "js": [
-      "/js/vue.js",
+      "/js/angular.min.js",
       "/js/utils.js",
-      "/js/index.js"
+      "/js/app.ng.js",
+      "/js/index.ng.js"
     ]
   },
   "account": {
@@ -16,11 +17,12 @@
       "/css/account.css"
     ],
     "js": [
-      "/js/vue.js",
+      "/js/angular.min.js",
       "/js/zepto.min.js",
       "/js/dropdown.js",
       "/js/utils.js",
-      "/js/account.js"
+      "/js/app.ng.js",
+      "/js/account.ng.js"
     ]
   }
 }

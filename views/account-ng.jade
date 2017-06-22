@@ -4,7 +4,7 @@
 extends layout
 
 block content
-    article.wrapper
+    article.wrapper(ng-app="account",ng-controller="activityListCtrl")
 
         header.page-header
             h1= 'AA Calculate'
@@ -16,8 +16,8 @@ block content
                 button.btn.btn-default.dropdown-toggle(type="button",id="dropdownMenu1",data-toggle="dropdown" aria-haspopup="true",aria-expanded="true") All Activities
                     span.caret
                 ul.dropdown-menu(aria-labelledby="dropdownMenu3")
-                    li(v-for="activity in activities")
-                        a(href="javascript:;",v-text="activity")
+                    li(ng-repeat="activity in activities | filter: '!Activities'")
+                        a(href="javascript:;",ng-bind="activity")
                     li.divider(role="separator")
                     li.btn-addactivity
                         a(href="javascript:;") new activity
@@ -28,30 +28,28 @@ block content
                 h3 Members
                 a(href="javascript:;") add
             ul.member-list.list-inline
-                li(v-for="name in members")
+                li(ng-repeat="name in members | filter: '!Members'")
                     span.glyphicon.glyphicon-user(aria-hidden="true")
-                    span(v-text="name")
+                    span(ng-bind="name")
 
 
         section.items
             header
                 h3 Items
-                a(href="javascript:;",v-on:click="addItems()") new item
+                a(href="javascript:;",ng-click="addItems()") new item
             article.container-fluid
-                .row(v-for="item in items")
+                .row(ng-repeat="item in items")
                     .col-xs-1.col-md-1.col-lg-1
                         .checkbox
                             label
-                                input(type="checkbox",value="option1",aria-label="...",v-bind:data-index="item.index")
+                                input(type="checkbox",value="option1",aria-label="...",data-index="{{item.index}}")
                     .col-xs-3.col-md-3.col-lg-3
-                        select.form-control(v-bind:data-index="item.index",v-on:change="select($event)")
-                            option(v-for="(name, index) in membersAll",v-bind:value="name",v-text="name")
+                        select.form-control(data-index="{{item.index}}",ng-model="selectedMem",ng-options="name for name in members",ng-change="select(selectedMem)")
 
                     .col-xs-3.col-md-3.col-lg-3
-                        select.form-control(v-bind:data-index="item.index",v-on:change="select($event)")
-                            option(v-for="(act, index) in activitiesAll",v-bind:value="act",v-text="act")
+                        select.form-control(data-index="{{item.index}}",ng-model="selectedAct",ng-options="act for act in activities",ng-change="select(selectedAct)")
 
                     .col-xs-3.col-md-3.col-lg-3
                         .input-group
                             span.input-group-addon ￥
-                            input.form-control(type="text",aria-label="RMB",v-bind:data-index="item.index",v-on:change="input($event)")
+                            input.form-control(type="text",aria-label="RMB",data-index="{{item.index}}")
