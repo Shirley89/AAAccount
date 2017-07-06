@@ -8,7 +8,7 @@ block content
             .input-group
                 input(type="text",class="form-control",placeholder="new account",v-model="input")
                 span(class="input-group-btn")
-                    button(class="btn btn-default",type="button",v-on:click="add()")= "+"
+                    button(class="btn btn-default",type="button",@click="add()")= "+"
 
         .list-group
-            a(class="list-group-item",v-for="(account, index) in accounts",v-bind:class="{active:isActived === index}",v-text="account.value",v-bind:href="'/account/' + account.index")
+            a(class="list-group-item",v-for="(account, index) in accounts",:class="{active:isActived === index}",v-text="account.value",:href="'/account/' + account.index")

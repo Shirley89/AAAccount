@@ -1,5 +1,5 @@
 .wrapper {
-    margin: 0 1em;
+    margin: 0 1rem 5rem 1rem;
 }
 
 header {
@@ -46,11 +46,11 @@ li.btn-addactivity > a:hover {
 
 /* members */
 .member-list {
-    font-size: 1.2em;
+    font-size: 1.8rem;
 }
 
 .member-list li {
-    margin-right: 1.5em;
+    margin-right: 1.5rem;
 }
 
 .member-list li:last-of-type {
@@ -58,7 +58,7 @@ li.btn-addactivity > a:hover {
 }
 
 .member-list span:nth-of-type(2), .member-list a {
-    margin-left: .2em;
+    margin-left: .2rem;
 }
 
 .member-list .btn-default {
@@ -67,9 +67,13 @@ li.btn-addactivity > a:hover {
 
 /* items */
 .items {
-    margin-top: 5em;
+    margin-top: 5rem;
 }
 
 .items footer {
-    margin-top: 2em;
+    margin-top: 2rem;
+}
+
+#count {
+    margin-top: 2rem;
 }

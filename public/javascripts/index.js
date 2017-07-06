@@ -4,6 +4,30 @@
 
 /* VM */
 (function (utils) {
+    Vue.component('accounts', {
+        data: function () {
+            return {
+                _key: 'Accounts',
+                isActived: 0,
+                accounts: utils.locals.getArray(this._key).reverse()
+            };
+        },
+        created: function () {
+            this._initDefaultData();
+        },
+        methods: {
+            _initDefaultData: function () {
+                var _key = this._key;
+                if (utils.locals.getArray(_key).length == 0)
+                    utils.locals.setArray(_key, [{"value": "青岛", "index": 0}, {"value": "秦皇岛", "index": 1}]);
+            }
+        },
+        computed: {
+            input: function (val) {
+                return val.trim();
+            }
+        }
+    });
     var _input = '', _key = 'Accounts';
     _defaultData(_key);
 

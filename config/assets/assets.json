@@ -20,6 +20,7 @@
       "/js/zepto.min.js",
       "/js/dropdown.js",
       "/js/utils.js",
+      "/js/calculate.js",
       "/js/account.js"
     ]
   }

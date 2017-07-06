@@ -38,20 +38,27 @@ block content
                 h3 Items
                 a(href="javascript:;",@click="addItems()") new item
             article.container-fluid
-                .row(v-for="item in items")
-                    .col-xs-1.col-md-1.col-lg-1
-                        .checkbox
-                            label
-                                input(type="checkbox",value="option1",aria-label="...",:data-index="item.index")
-                    .col-xs-3.col-md-3.col-lg-3
-                        select.form-control(:data-index="item.index",@change="select($event)")
-                            option(v-for="(name, index) in membersAll",:value="name",v-text="name")
+                item(ref="item",v-for="item in items",:item="item",:key="item.index")
+                    //.col-xs-1.col-md-1.col-lg-1
+                    //    .checkbox
+                    //        label
+                    //            input(type="checkbox",value="option1",aria-label="...",:data-index="item.index")
 
-                    .col-xs-3.col-md-3.col-lg-3
-                        select.form-control(:data-index="item.index",@change="select($event)")
-                            option(v-for="(act, index) in activitiesAll",:value="act",v-text="act")
+                    //item-checkbox(:index="item.index")
 
-                    .col-xs-3.col-md-3.col-lg-3
-                        .input-group
-                            span.input-group-addon ￥
-                            input.form-control(type="text",aria-label="RMB",:data-index="item.index",@change="input($event)")
+                    //.col-xs-3.col-md-3.col-lg-3
+                    //    select.form-control(:data-index="item.index",@change="select($event)")
+                    //        option(v-for="(name, index) in membersAll",:value="name",v-text="name")
+                    //item-select(:index="item.index",:data="members",:val-default="memberDefault")
+
+                    //.col-xs-3.col-md-3.col-lg-3
+                    //    select.form-control(:data-index="item.index",@change="select($event)")
+                    //        option(v-for="(act, index) in activitiesAll",:value="act",v-text="act")
+                    //item-select(:index="item.index",:data="activities",:val-default="actDefault")
+
+                    //.col-xs-3.col-md-3.col-lg-3
+                    //    .input-group
+                    //        span.input-group-addon ￥
+                    //        input.form-control(type="text",aria-label="RMB",:data-index="item.index",@change="input($event)")
+                    //item-input(:index="item.index")
+            button(id="count",type="button",class="btn btn-info",@click="count()") count
