@@ -4,7 +4,7 @@
 
 /* VM */
 (function (utils) {
-    var _key = 'Accounts', list = [],
+    var key = 'List', list = [],
         activities = ['外卖早午饭', '路费', '海鲜居', '相机租赁'],
         members = ['果果', '阿莫', '小哈'];
 
@@ -34,21 +34,20 @@
     });
 
     var itemSelect = Vue.extend({
-        props: ['valDefault', 'data'],
+        props: ['valDefault', 'data', 'val'],
         template: '\
         <div class="col-xs-3 col-md-3 col-lg-3">\
         <select class="form-control" \
         @change="change"\
         v-model:value="value">\
-            <option v-for="name in all" v-text="name"\
-        ></option>\
+            <option v-for="(name, index) in all" v-text="name" :disabled="index==0"></option>\
         </select>\
         </div>\
         '
         ,
         data: function () {
             return {
-                value: this.valDefault
+                value: this.val || this.valDefault
             }
         },
         methods: {
@@ -67,6 +66,7 @@
     });
 
     var itemInput = Vue.extend({
+        props: ['val'],
         template: '\
         <div class="col-xs-3 col-md-3 col-lg-3">\
         <div class="input-group">\
@@ -83,7 +83,9 @@
         '
         ,
         data: function () {
-            return {value: ''}
+            return {
+                value: typeof this.val != 'undefined' ? this.val : ''
+            }
         },
         methods: {
             change: function () {
@@ -95,14 +97,12 @@
         }
     });
 
-    var comItem = Vue.component('item', {
-        props: ['item'],
+    Vue.component('item', {
+        props: ['activities', 'members', 'item'],
         data: function () {
             return {
                 actDefault: 'Activities',
-                memberDefault: 'Members',
-                activities: activities,
-                members: members
+                memberDefault: 'Members'
             };
         },
         computed: {
@@ -112,10 +112,9 @@
         },
         template: '\
         <div class="row">\
-            <item-checkbox ref="checkbox" :index="index"></item-checkbox>\
-            <item-select ref="selMem" :index="index" :data="members" :val-default="memberDefault"></item-select>\
-            <item-select ref="selAct" :index="index" :data="activities" :val-default="actDefault"></item-select>\
-            <item-input ref="input" :index="index"></item-input>\
+            <item-select ref="name" :data="members" :val-default="memberDefault" :val="item.name"></item-select>\
+            <item-select ref="act" :data="activities" :val-default="actDefault" :val="item.activity"></item-select>\
+            <item-input ref="input" :val="item.pay"></item-input>\
         </div>',
         components: {
             itemCheckbox: itemCheckbox,
@@ -125,15 +124,17 @@
         methods: {
             valid: function () {
                 var refs = this.$refs;
-                return refs.selMem.valid() && refs.selAct.valid() || refs.input.valid();
+                return refs.name.valid() && refs.act.valid() || refs.input.valid();
             },
             getData: function () {
-                var refs = this.$refs;
-                return {
-                    name: refs.selMem.value,
-                    activity: refs.selAct.value,
-                    pay: refs.input.value
-                };
+                var refs = this.$refs,
+                    values = {
+                        index: this.index,
+                        name: refs.name.value,
+                        activity: refs.act.value,
+                        pay: refs.input.value
+                    };
+                return values;
             }
         }
     });
@@ -143,13 +144,11 @@
         data: {
             activities: activities,
             members: members,
-            items: [{index: 0}]
+            items: utils.locals.getArray(key, [[{index: 0}]])[0]
         },
         methods: {
             addItems: function () {
-                var value = {index: utils.newIndex(this.items)};
-                // utils.locals.pushArray(_key, value);
-                this.items.push(value);
+                this.items.push({index: utils.newIndex(this.items)});
             },
             count: function () {
                 list = [];
@@ -158,9 +157,11 @@
                         list.push(item.getData());
                     }
                 });
+                utils.locals.setArray(key, [list]);
                 if (!list.length)
                     alert('data is empty');
-                console.dir(new Calculator(list).getResult());
+                var cal = new Calculator(list);
+                console.log(cal.getResult());
             }
         }
     });

@@ -7,27 +7,40 @@
 
     // to count cost for each member
     _counter.mapForMember = _funcDefault;
+    _counter.getMapForMember = function (members) {
+        return function (name, cost) {
+            var self = members[name];
+            if (!self) {
+                self = members[name] = new Member(name);
+            }
+            self.addRetrieve(cost);
+        };
+    };
     _counter.counters = {
         average: function (members) {
             var total = 0, avr = 0;
             members.forEach(function (mem) {
                 total += Number(mem.pay);
             });
-            // TODO: 精确至2位小数
-            avr = total / members.length;
+            avr = _counter.roundNumber(total / members.length);
             members.map(function (mem) {
-                var r = mem.pay - avr;
+                var r = _counter.roundNumber(mem.pay - avr);
                 mem.retrieve = r;
                 _counter.mapForMember(mem.name, r);
             });
         },
         specify: function (members) {
             members.map(function (mem) {
-                var r = Number(mem.pay) - mem.cost;
+                var r = Number(mem.pay) - Number(mem.cost);
                 mem.retrieve = r;
                 _counter.mapForMember(mem.name, r);
             });
         }
+    };
+    _counter.roundNumber = function (number, decimalPlaces) {
+        var _decimalPlaces = (!decimalPlaces ? 2 : decimalPlaces),
+            tmpNum = Math.pow(10, _decimalPlaces);
+        return Math.round(number * tmpNum) / tmpNum;
     };
     _counter.getCounter = function (type) {
         var func = this.counters[type];
@@ -65,23 +78,26 @@
     };
 
 
-    // Calculator private params
-    var activities = {},
-        members = {};
-
     function Calculator(list) {
+        this.initData();
+        _setFunc(this.members);
         _clear();
+        (Array.isArray(list) ? list : [])
+            .forEach(_formatData.bind(this));
+    }
 
-        (Array.isArray(list) ? list : []).forEach(_formatData);
+    Calculator.prototype.initData = function () {
+        this.activities = {};
+        this.members = {};
+    };
 
-        _setPublicMapFunc(_counter);
-
-        this.clear();
+    function _setFunc(members) {
+        _counter.mapForMember === _funcDefault &&
+        (_counter.mapForMember = _counter.getMapForMember(members));
     }
 
     function _clear() {
-        activities = {};
-        members = {};
+        _funcDefault = null;
     }
 
     function _formatData(item) {
@@ -91,34 +107,30 @@
             mem = {
                 name: item['name'],
                 pay: item['pay']
-            };
+            },
+            acts = this.activities;
         type == 'specify' && (mem.cost = item['cost']);
 
-        if (!activities[act]) {
-            activities[act] = new Activity(act, type);
+        if (!acts[act]) {
+            acts[act] = new Activity(act, type);
         }
-        activities[act].addMember(mem);
-    }
-
-    function _setPublicMapFunc(obj) {
-        obj['mapForMember'] = function (name, cost) {
-            var self = members[name];
-            if (!self) {
-                self = members[name] = new Member(name);
-            }
-            self.addRetrieve(cost);
-        };
+        acts[act].addMember(mem);
     }
 
     function _sort(mem1, mem2) {
-        return mem2.retrieve - mem1.retrieve;
+        return mem2.retrieve > mem1.retrieve;
     }
 
-    function _order() {
-        var positive = [], negative = [], zero = [];
+    function _deepCopy(arr) {
+        return JSON.parse(JSON.stringify(arr));
+    }
 
-        Object.keys(members).forEach(function (name) {
-            var r = members[name].getRetrieve(),
+    Calculator.prototype.order = function () {
+        var mems = this.members,
+            positive = [], negative = [], zero = [];
+
+        Object.keys(mems).forEach(function (name) {
+            var r = mems[name].getRetrieve(),
                 obj = {name: name};
 
             if (r == 0) {
@@ -129,44 +141,52 @@
             r > 0 ? positive.push(obj) :
                 negative.push(obj);
         });
+        positive.sort(_sort);
+        negative.sort(_sort);
 
         return {
-            positive: positive.sort(_sort),
-            negative: negative.sort(_sort),
+            positive: positive,
+            negative: negative,
             zero: zero
         }
-    }
+    };
 
     function _getVal(arr) {
         var iterator = arr.iterator,
             obj = iterator.next();
+        console.log('_getVal', arr, obj);
         if (obj.done) return null;
         return arr[obj.value];
     }
 
     Calculator.prototype.getResult = function () {
-        var gather,
+        var acts = this.activities,
+            gather, zero,
             positive, negative,
             currentPos, currentNeg,
             result = [];
 
         // count in activity and sort
-        Object.keys(activities).forEach(function (name) {
-            activities[name].count();
+        Object.keys(acts).forEach(function (name) {
+            acts[name].count();
         });
-        gather = _order();
+        gather = this.order();
 
         positive = gather.positive;
         negative = gather.negative;
+        zero = gather.zero;
+        console.log('gather', gather);
 
         // get pay for who
         if (positive.length == 0 || negative.length == 0) {
-            return gather.zero.map(function (mem) {
+            return zero.map(function (mem) {
                 mem.payTo = null;
             });
         }
 
-        var _resultObj = {name: '', receiveFrom: []};
+        var getObj = function (name) {
+            return {name: name, receiveFrom: []};
+        }, _result = {};
         positive.iterator = negative.keys();
         negative.iterator = positive.keys();
         currentPos = _getVal(positive);
@@ -174,27 +194,28 @@
         (function () {
             var r, o;
 
-            //TODO:还有bug
+            console.log('currentPos', currentPos);
+            console.log('currentNeg', currentNeg);
             if (currentPos == null || currentNeg == null) {
                 return;
             }
 
-            if (!_resultObj.name) {
-                _resultObj.name = currentPos.name;
-                _resultObj.receiveFrom = [];
+            if (!_result.name) {
+                _result = getObj(currentPos.name);
             }
 
             r = currentPos.retrieve + currentNeg.retrieve;
             o = {
                 name: currentNeg.name
             };
-
+            console.log('r', r);
             if (r >= 0) {
                 o.amount = currentNeg.retrieve;
-                _resultObj.receiveFrom.push(Object.assign(o, {}));
+                _result.receiveFrom.push(_deepCopy(o));
                 currentNeg.retrieve = 0;
                 currentNeg = _getVal(negative);
             }
+            console.log('_result', _result);
 
             if (r > 0) {
                 currentPos.retrieve = r;
@@ -202,16 +223,17 @@
 
             if (r < 0) {
                 o.amount = currentPos.retrieve;
-                _resultObj.receiveFrom.push(Object.assign(o, {}));
+                _result.receiveFrom.push(_deepCopy(o));
                 currentNeg.retrieve = r;
             }
 
             if (r <= 0) {
-                result.push({name: currentPos.name, receiveFrom: _resultObj.receiveFrom.slice()});
+                result.push(_deepCopy(_result));
                 currentPos.retrieve = 0;
                 currentPos = _getVal(positive);
-                _resultObj.name = '';
+                delete _result.name;
             }
+            console.log('result', result);
 
             arguments.callee.call();
         })();
@@ -221,10 +243,6 @@
 
     Calculator.prototype.getDetail = function () {
 
-    };
-
-    Calculator.prototype.clear = function () {
-        _funcDefault = null;
     };
 
 

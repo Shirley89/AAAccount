@@ -38,7 +38,7 @@ block content
                 h3 Items
                 a(href="javascript:;",@click="addItems()") new item
             article.container-fluid
-                item(ref="item",v-for="item in items",:item="item",:key="item.index")
+                item(ref="item",:activities="activities",:members="members",v-for="item in items",:item="item",:key="item.index")
                     //.col-xs-1.col-md-1.col-lg-1
                     //    .checkbox
                     //        label

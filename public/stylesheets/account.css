@@ -74,6 +74,10 @@ li.btn-addactivity > a:hover {
     margin-top: 2rem;
 }
 
+.row {
+    margin-bottom: 2rem;
+}
+
 #count {
     margin-top: 2rem;
 }

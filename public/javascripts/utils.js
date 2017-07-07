@@ -49,13 +49,13 @@
         setArray: function (key, value) {
             local[key] = JSON.stringify(value);
         },        //读取数组
-        getArray: function (key) {
+        getArray: function (key, defaultArr) {
             var value;
             try {
                 value = JSON.parse(local[key]);
             } catch (e) {
             }
-            return Array.isArray(value) ? value : [];
+            return Array.isArray(value) ? value : defaultArr || [];
         },        //压栈，存储数组，以JSON格式存储
         pushArray: function (key, value) {
             var _value = this.getArray(key);
