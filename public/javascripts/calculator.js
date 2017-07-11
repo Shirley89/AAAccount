@@ -151,10 +151,14 @@
         }
     };
 
+    function _useIterator(arr) {
+        arr.iterator = arr.keys();
+        arr.unDone = 1;
+    }
+
     function _getVal(arr) {
-        var iterator = arr.iterator,
-            obj = iterator.next();
-        arr.done = obj.done;
+        var obj = arr.iterator.next();
+        obj.done && arr.unDone--;
         return arr[obj.value];
     }
 
@@ -174,9 +178,8 @@
         positive = gather.positive;
         negative = gather.negative;
         zero = gather.zero;
-        console.log('gather', gather);
 
-        // get pay for who
+        // get 'pay for who'
         if (positive.length == 0 || negative.length == 0) {
             return zero.map(function (mem) {
                 mem.payTo = null;
@@ -186,42 +189,40 @@
         var getObj = function (name) {
             return {name: name, receiveFrom: []};
         }, _result = {};
-        positive.iterator = negative.keys();
-        negative.iterator = positive.keys();
+        _useIterator(positive);
+        _useIterator(negative);
         currentPos = _getVal(positive);
         currentNeg = _getVal(negative);
-        (function () {
-            var r, o;
 
-            console.log('currentPos', currentPos);
-            console.log('currentNeg', currentNeg);
-            if (positive.done || negative.done) {
+        // calculate result of who pay for who
+        (function () {
+            if (!positive.unDone || !negative.unDone) {
                 return;
             }
 
+            var r, o;
             if (!_result.name) {
                 _result = getObj(currentPos.name);
             }
-
             r = currentPos.retrieve + currentNeg.retrieve;
+            r = _counter.roundNumber(r);
             o = {
                 name: currentNeg.name
             };
-            console.log('r', r);
+
             if (r >= 0) {
-                o.amount = currentNeg.retrieve;
+                o.amount = Math.abs(currentNeg.retrieve);
                 _result.receiveFrom.push(_deepCopy(o));
                 currentNeg.retrieve = 0;
                 currentNeg = _getVal(negative);
             }
-            console.log('_result', _result);
 
             if (r > 0) {
                 currentPos.retrieve = r;
             }
 
             if (r < 0) {
-                o.amount = currentPos.retrieve;
+                o.amount = Math.abs(currentPos.retrieve);
                 _result.receiveFrom.push(_deepCopy(o));
                 currentNeg.retrieve = r;
             }
@@ -232,7 +233,6 @@
                 currentPos = _getVal(positive);
                 delete _result.name;
             }
-            console.log('result', result);
 
             arguments.callee.call();
         })();
