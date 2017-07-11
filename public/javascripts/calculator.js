@@ -154,8 +154,7 @@
     function _getVal(arr) {
         var iterator = arr.iterator,
             obj = iterator.next();
-        console.log('_getVal', arr, obj);
-        if (obj.done) return null;
+        arr.done = obj.done;
         return arr[obj.value];
     }
 
@@ -196,7 +195,7 @@
 
             console.log('currentPos', currentPos);
             console.log('currentNeg', currentNeg);
-            if (currentPos == null || currentNeg == null) {
+            if (positive.done || negative.done) {
                 return;
             }
 
