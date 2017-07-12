@@ -19,7 +19,8 @@
     "js": [
       "/js/angular.min.js",
       "/js/zepto.min.js",
-      "/js/dropdown.js",
+      "/js/bootstrap/dropdown.js",
+      "/js/bootstrap/modal.js",
       "/js/utils.js",
       "/js/app.ng.js",
       "/js/account.ng.js"

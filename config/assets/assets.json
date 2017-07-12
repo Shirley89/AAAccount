@@ -18,7 +18,8 @@
     "js": [
       "/js/vue.js",
       "/js/zepto.min.js",
-      "/js/dropdown.js",
+      "/js/bootstrap/dropdown.js",
+      "/js/bootstrap/modal.js",
       "/js/utils.js",
       "/js/calculator.js",
       "/js/account.js"
