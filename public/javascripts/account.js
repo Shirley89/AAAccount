@@ -144,6 +144,7 @@
         data: {
             activities: activities,
             members: members,
+            modalTitle: 'Calculate result',
             items: utils.locals.getArray(key, [[{index: 0}]])[0]
         },
         methods: {

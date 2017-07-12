@@ -81,3 +81,11 @@ li.btn-addactivity > a:hover {
 #count {
     margin-top: 2rem;
 }
+
+.modal-footer {
+    text-align: center;
+}
+
+.modal-footer .btn-default {
+    width: 50%;
+}

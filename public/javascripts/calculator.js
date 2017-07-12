@@ -24,15 +24,15 @@
             });
             avr = _counter.roundNumber(total / members.length);
             members.map(function (mem) {
-                var r = _counter.roundNumber(mem.pay - avr);
-                mem.retrieve = r;
+                var r = mem.pay - avr;
+                mem.retrieve = _counter.roundNumber(r);
                 _counter.mapForMember(mem.name, r);
             });
         },
         specify: function (members) {
             members.map(function (mem) {
                 var r = Number(mem.pay) - Number(mem.cost);
-                mem.retrieve = r;
+                mem.retrieve = _counter.roundNumber(r);
                 _counter.mapForMember(mem.name, r);
             });
         }

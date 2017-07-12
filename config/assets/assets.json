@@ -17,7 +17,7 @@
     ],
     "js": [
       "/js/vue.js",
-      "/js/zepto.min.js",
+      "/js/jquery.min.js",
       "/js/bootstrap/dropdown.js",
       "/js/bootstrap/modal.js",
       "/js/utils.js",

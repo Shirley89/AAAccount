@@ -336,4 +336,4 @@
     Plugin.call($target, option, this)
   })
 
-}(Zepto);
+}(jQuery);
